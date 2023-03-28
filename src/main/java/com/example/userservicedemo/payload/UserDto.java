@@ -1,10 +1,12 @@
 package com.example.userservicedemo.payload;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import com.example.userservicedemo.entity.UserAddress;
 import lombok.Data;
 
+import java.util.List;
+
+/**
+ *  Class for UserDto
+ */
 @Data
 public class UserDto {
     private int id;
@@ -16,4 +18,6 @@ public class UserDto {
     private String email;
 
     private String password;
+
+    private List<UserAddress> userAddressList;
 }

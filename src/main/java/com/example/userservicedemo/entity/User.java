@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -25,4 +27,8 @@ public class User {
     private String email;
     @Column(name="password",nullable = false)
     private String password;
+
+    @OneToMany(targetEntity = UserAddress.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private List<UserAddress> userAddressList;
 }
