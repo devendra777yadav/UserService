@@ -18,8 +18,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -43,8 +41,6 @@ class UserServiceImplTest {
 
         // Given
         UserDto expected= UserServiceImplUtils.getUserDto();
-        List<User> userList = UserServiceImplUtils.getUserList();
-//        when(userRepository.findAll()).thenReturn(userList);
         UserDto request = UserServiceImplUtils.getUserDto();
         // When
         UserDto actual = userService.registerUser(request);
