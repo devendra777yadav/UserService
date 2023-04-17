@@ -1,10 +1,13 @@
 package com.example.userservicedemo.exception;
 
 public class UserExistException extends RuntimeException{
-    private String errorCode;
+    private String message;
 
-    public UserExistException(String message, String errorCode) {
+    public UserExistException() {
+    }
+
+    public UserExistException(String message) {
         super(message);
-        this.errorCode = errorCode;
+        this.message = message;
     }
 }

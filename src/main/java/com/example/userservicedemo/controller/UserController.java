@@ -1,4 +1,7 @@
 package com.example.userservicedemo.controller;
+import com.example.userservicedemo.exception.ErrorResponse;
+import com.example.userservicedemo.exception.UserExistException;
+import com.example.userservicedemo.exception.UserNotExistException;
 import com.example.userservicedemo.payload.LoginDto;
 import com.example.userservicedemo.payload.UserDto;
 import com.example.userservicedemo.service.UserService;
@@ -15,10 +18,25 @@ import java.util.List;
  */
 @RestController
 @Log4j2
-@RequestMapping("api/users")
+@RequestMapping("user-service/users")
 public class UserController {
+
+    @ExceptionHandler(value = UserNotExistException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleUserNotExistException(UserNotExistException ex) {
+        return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+    }
+
+    @ExceptionHandler(value = UserExistException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handleUserExistException(UserExistException ex)
+    {
+        return new ErrorResponse(HttpStatus.CONFLICT.value(), ex.getMessage());
+    }
+
     @Autowired
     private UserService userService;
+
     /**
      * controller for register new user
      * @param {@link userDto}
@@ -52,5 +70,10 @@ public class UserController {
     public List<UserDto> getAllUsers(){
         log.info("Getting all the user");
         return userService.getAllUsers();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDto> getUserById(@PathVariable("id") long id){
+        return new ResponseEntity<>(userService.getUserById(id),HttpStatus.OK);
     }
 }

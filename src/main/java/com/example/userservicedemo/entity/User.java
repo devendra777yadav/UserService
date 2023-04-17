@@ -31,4 +31,7 @@ public class User {
     @OneToMany(targetEntity = UserAddress.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private List<UserAddress> userAddressList;
+
+    private long orderId;
+
 }

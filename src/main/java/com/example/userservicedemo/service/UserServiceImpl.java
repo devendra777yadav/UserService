@@ -3,6 +3,7 @@ package com.example.userservicedemo.service;
 import com.example.userservicedemo.entity.User;
 import com.example.userservicedemo.entity.UserAddress;
 import com.example.userservicedemo.exception.UserExistException;
+import com.example.userservicedemo.exception.UserNotExistException;
 import com.example.userservicedemo.payload.LoginDto;
 import com.example.userservicedemo.payload.UserDto;
 import com.example.userservicedemo.repository.UserAddressRepository;
@@ -12,7 +13,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> existingUser = userRepository.findByusername(userDto.getUsername());
         if(existingUser.isPresent()){
             log.info("User Already Registered");
-            throw new UserExistException("User already exists", "USER_ALREADY_EXISTS");
+            throw new UserExistException("User already exists");
         }
         User newUser=mapper.convertValue(userDto, User.class); // x
 
@@ -78,5 +78,11 @@ public class UserServiceImpl implements UserService {
         log.info("All the users are accessible");
         return users.stream().map(user->mapper.convertValue(user,UserDto.class
         )).collect(Collectors.toList());
+    }
+
+    @Override
+    public UserDto getUserById(long id) {
+        User user = userRepository.findById(id).orElseThrow(()-> new UserNotExistException("User with id " + id +" does not exist"));
+        return mapper.convertValue(user, UserDto.class);
     }
 }
